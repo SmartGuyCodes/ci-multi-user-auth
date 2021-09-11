@@ -33,6 +33,20 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+//Other routes
+
+$routes->match(['get', 'post'], 'login', 'UserController::login', ["filter" => "noauth"]);
+// Admin routes
+$routes->group("admin", ["filter" => "auth"], function ($routes) {
+    $routes->get("/", "AdminController::index");
+});
+// Editor routes
+$routes->group("editor", ["filter" => "auth"], function ($routes) {
+    $routes->get("/", "EditorController::index");
+});
+$routes->get('logout', 'UserController::logout');
+
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
